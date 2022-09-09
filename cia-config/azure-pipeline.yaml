@@ -1,0 +1,111 @@
+name: $(date:yyyyMMdd)$(rev:.r)
+
+trigger:
+- main
+- build/*
+
+variables:
+  - name: imageName
+    value: 'pass-through'
+  - group: goprivate
+  - name: sshknownhost
+    value: $[variables.sshadoknownhost]
+  - name: sshpubkey
+    value: $[variables.sshpublickey]
+  - name: sshhost
+    value: ssh.dev.azure.com
+
+jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      name: cia-agent-pool
+    steps:
+      - checkout: self
+        persistCredentials: true
+      - task: InstallSSHKey@0
+        inputs:
+          knownHostsEntry: '$(sshknownhost)'
+          sshPublicKey: '$(sshpubkey)'
+          sshKeySecureFile: 'goprivatekey'
+      - task: gitversion/setup@0
+        inputs:
+          versionSpec: '5.x'
+      - task: Bash@3
+        displayName: Gitconfig insteadof
+        inputs:
+          targetType: 'inline'
+          script: 'git config --global url."git@ssh.dev.azure.com:v3/ciaalicorp/".insteadof "https://dev.azure.com/ciaalicorp/"'
+      - task: gitversion/execute@0
+        inputs:
+          useConfigFile: true
+          configFilePath: ./cia-config/gitversion.yml
+      - script: echo current version is $(GitVersion.SemVer)
+        displayName: 'Display version'
+      - task: GoTool@0
+        displayName: Preparar Go 1.18
+        inputs:
+          version: 1.18
+      - task: Go@0
+        displayName: Ejecutar go get
+        inputs:
+          arguments: -d
+        env:
+          GOPRIVATE: dev.azure.com
+      - task: Go@0
+        displayName: Ejecutar go test
+        enabled: True
+        inputs:
+          command: test
+          arguments: './...'
+      - task: Go@0
+        displayName: Ejecutar go build
+        enabled: True
+        inputs:
+          command: build
+          arguments: -v -o /dev/null
+      - task: CopyFiles@2
+        displayName: Preparar manifiestos Knative
+        inputs:
+          SourceFolder: 'cia-config/kn'
+          Contents: '*.yaml'
+          TargetFolder: '$(build.artifactstagingdirectory)/kn'
+      - task: PowerShell@2
+        displayName: Validar existencia de especificacion de OpenApi
+        inputs:
+          targetType: 'inline'
+          script: |
+            $fileExists = Test-Path -Path "$(System.DefaultWorkingDirectory)/cia-config/docs/openapi-spec.json"
+            $fileExists
+            Write-Output "##vso[task.setvariable variable=FileExists]$fileExists"
+      - script: |
+          export PATH=$PATH:$(go env GOPATH)/bin
+          swag init --outputTypes json --output ./cia-config && mv ./cia-config/swagger.json ./cia-config/docs/openapi-spec.json
+        displayName: 'Generar especificacion OpenApi'
+        condition: eq(variables['FileExists'], False)
+      - task: CopyFiles@2
+        displayName: Preparar especificacion de OpenApi
+        inputs:
+          SourceFolder: 'cia-config/docs'
+          Contents: '*.json'
+          TargetFolder: '$(build.artifactstagingdirectory)/api'
+      - task: ArchiveFiles@2
+        displayName: Preparar artefacto de aplicacion
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/app/$(imageName)-$(Build.BuildId).zip'
+          replaceExistingArchive: true
+      - task: ArchiveFiles@2
+        displayName: Preparar artefacto de app
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/app/$(imageName)-$(Build.BuildId).zip'
+          replaceExistingArchive: true
+      - task: PublishBuildArtifacts@1
+        displayName: Publish artifact
+        condition: succeededOrFailed()
+...

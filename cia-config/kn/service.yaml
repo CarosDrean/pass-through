@@ -1,0 +1,20 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: $(Release.ImageName)
+  namespace: cia
+spec:
+  template:
+    metadata:
+      labels:
+        alicorp.com.pe/context: cia
+    spec:
+      containers:
+        - image: ciaalicorp.azurecr.io/$(Env.EnvPrefix)/$(Release.ImageName):$(Build.BuildNumber)
+          env:
+            - name: DEBUG_MODE
+              value: 'false'
+            - name: LOGGER_MAX_CHAR_BODY
+              value: '500'
+      imagePullSecrets:
+        - name: acr-ciaalicorp

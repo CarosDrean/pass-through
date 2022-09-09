@@ -1,0 +1,1165 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Salesforce Management",
+    "description": "Esta API permite obtener información de los vendedores de las DEX.",
+    "version": "1.0.0",
+    "x-audience": "internal"
+  },
+  "servers": [
+    {
+      "url": "http://cia-reqresp-alicorp-salesforce.cia.dev.knative.api-alicorp.com/v1/salesforce-management"
+    }
+  ],
+  "paths": {
+    "/salesperson/{salespersonCode}/tracking": {
+      "post": {
+        "operationId": "submitCoordinates",
+        "tags": [
+          "Coordinates"
+        ],
+        "summary": "Registro de coordenadas",
+        "description": "Esta operación permite registrar coordenadas de los vendedores de las DEX.",
+        "parameters": [
+          {
+            "name": "Request-Id",
+            "in": "header",
+            "description": "Identificador único del request utilizado para fines de trazabilidad.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "salespersonCode",
+            "in": "path",
+            "description": "Código de vendedor.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Cuerpo del mensaje para registrar coordenadas.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SalespersonTrackingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalespersonTrackingCreatedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "UNPROCESSABLE_ENTITY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnprocessableEntity"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_SERVER_ERROR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/salesperson/{salespersonCode}/teac": {
+      "post": {
+        "operationId": "submitTeac",
+        "tags": [
+          "TEAC"
+        ],
+        "summary": "Registro de TEAC",
+        "description": "Esta operación permite enviar el tiempo estimado de atención al cliente (TEAC) de un vendedor DEX.",
+        "parameters": [
+          {
+            "name": "Request-Id",
+            "in": "header",
+            "description": "Identificador único del request utilizado para fines de trazabilidad.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "Application-Code",
+            "in": "header",
+            "description": "Identificador único de la aplicación consumidora.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "salespersonCode",
+            "in": "path",
+            "description": "Código de vendedor.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Cuerpo del mensaje para crear el registro de TEAC.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeacRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacCreatedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "UNPROCESSABLE_ENTITY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnprocessableEntity"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_SERVER_ERROR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/salesperson/{salespersonCode}": {
+      "get": {
+        "operationId": "getSalespersonByIdOrUserId",
+        "tags": [
+          "Salesperson"
+        ],
+        "summary": "Obtiene información de un vendedor a partir de su código identificador..",
+        "description": "Esta operación permite obtener la información base de un vendedor.",
+        "parameters": [
+          {
+            "name": "Request-Id",
+            "in": "header",
+            "description": "Identificador único del request utilizado para fines de trazabilidad.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "Application-Code",
+            "in": "header",
+            "description": "Identificador único de la aplicación consumidora.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "salespersonCode",
+            "in": "path",
+            "description": "Código de vendedor.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "Habilita la busqueda por ID de usuario.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Salesperson"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "NO_CONTENT"
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_SERVER_ERROR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/salesperson/{salespersonCode}/sales-target": {
+      "get": {
+        "operationId": "getSalesTarget",
+        "tags": [
+          "Commissions"
+        ],
+        "summary": "Obtiene avance del objetivo de venta.",
+        "description": "Esta operación permite consultar el avance de las sueldos de los vendedores DEX.",
+        "parameters": [
+          {
+            "name": "Request-Id",
+            "in": "header",
+            "description": "Identificador único del request utilizado para fines de trazabilidad.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "Application-Code",
+            "in": "header",
+            "description": "Identificador único de la aplicación consumidora.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "salespersonCode",
+            "in": "path",
+            "description": "Código de Vendedor.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "territoryCode",
+            "in": "query",
+            "description": "Código de Territorio.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "detailLevel",
+            "in": "query",
+            "description": "Detalle de nivel de respuesta. Si no se envia este parametro el nivel por default sera el 1. El valor enviado no puede ser meno a 0 o mayor a 3, de lo contrario devolvera un error.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalesTarget"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "NO_CONTENT"
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_SERVER_ERROR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/salesperson/{salespersonCode}/priorities": {
+      "get": {
+        "operationId": "getProductSalePriorities",
+        "tags": [
+          "Sale priority"
+        ],
+        "summary": "Obtiene prioridades de venta.",
+        "description": "Esta operación permite consultar las familias, categorías y marca con prioridad de venta por cliente de un vendedor.",
+        "parameters": [
+          {
+            "name": "Request-Id",
+            "in": "header",
+            "description": "Identificador único del request utilizado para fines de trazabilidad.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "Application-Code",
+            "in": "header",
+            "description": "Identificador único de la aplicación consumidora.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "salespersonCode",
+            "in": "path",
+            "description": "Código de Vendedor.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Priorities"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_SERVER_ERROR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/no-orders": {
+      "post": {
+        "operationId": "createNoOrder",
+        "tags": [
+          "No Order"
+        ],
+        "summary": "Creacion de no pedidos",
+        "description": "Esta operación permite crear no pedidos a los cliente de Alicorp.",
+        "parameters": [
+          {
+            "name": "Request-Id",
+            "in": "header",
+            "description": "Identificador único del request utilizado para fines de trazabilidad.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "Application-Code",
+            "in": "header",
+            "description": "Identificador único de la aplicación consumidora.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Cuerpo del no pedido a crear.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoOrderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseMessage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "UNPROCESSABLE_ENTITY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnprocessableEntity"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_SERVER_ERROR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnexpectedError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Priorities": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Priority"
+        }
+      },
+      "Priority": {
+        "type": "object",
+        "properties": {
+          "customerCode": {
+            "type": "string",
+            "description": "Código del cliente",
+            "example": 345134625
+          },
+          "categories": {
+            "$ref": "#/components/schemas/Entities"
+          },
+          "families": {
+            "$ref": "#/components/schemas/Entities"
+          },
+          "brands": {
+            "$ref": "#/components/schemas/Entities"
+          }
+        }
+      },
+      "Entities": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Entity"
+        }
+      },
+      "Entity": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Codigo de entidad.",
+            "example": 123
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripcion de entidad.",
+            "example": "Margarina"
+          }
+        }
+      },
+      "SalespersonTrackingRequest": {
+        "type": "object",
+        "properties": {
+          "societyCode": {
+            "type": "string",
+            "example": 801,
+            "description": "Código de la sociedad."
+          },
+          "branchCode": {
+            "type": "string",
+            "example": 4,
+            "description": "Código de sede."
+          },
+          "territoryCode": {
+            "type": "string",
+            "example": 8,
+            "description": "Código de territorio."
+          },
+          "captureDate": {
+            "type": "string",
+            "example": "2022-07-19T00:00:00.000Z",
+            "description": "Fecha de captura de las coordenadas."
+          },
+          "captureTime": {
+            "type": "string",
+            "example": "00:00:15",
+            "description": "Hora de captura de las coordenadas."
+          },
+          "positionX": {
+            "type": "string",
+            "example": "-8.1568",
+            "description": "Posición X."
+          },
+          "positionY": {
+            "type": "string",
+            "example": "-14.123",
+            "description": "Posición Y."
+          },
+          "attributeId": {
+            "type": "string",
+            "example": "20220719070650256EOLAYAR",
+            "description": "ID de registro. Para controlar registros duplicados."
+          }
+        }
+      },
+      "SalespersonTrackingCreatedResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Estado.",
+            "example": 1
+          },
+          "statusDescription": {
+            "type": "string",
+            "description": "Descripción del estado."
+          }
+        }
+      },
+      "TeacRequest": {
+        "type": "object",
+        "properties": {
+          "societyCode": {
+            "type": "string",
+            "example": "801",
+            "description": "Código de la sociedad."
+          },
+          "branchCode": {
+            "type": "string",
+            "example": 4,
+            "description": "Código de la sede."
+          },
+          "territoryCode": {
+            "type": "string",
+            "example": "485001",
+            "description": "Código de terriorio."
+          },
+          "customerCode": {
+            "type": "string",
+            "example": "396509",
+            "description": "Código de cliente."
+          },
+          "captureDate": {
+            "type": "string",
+            "example": "2022-07-19",
+            "description": "Fecha de la captura del TEAC."
+          },
+          "captureTime": {
+            "type": "string",
+            "example": "00:00:15",
+            "description": "Hora de captura del TEAC."
+          },
+          "correlative": {
+            "type": "string",
+            "example": "1",
+            "description": "Correlativo."
+          },
+          "transactionType": {
+            "type": "string",
+            "example": "C",
+            "description": "Tipo de transacción."
+          },
+          "attributeId": {
+            "type": "string",
+            "example": "20220719070650256EOLAYAR",
+            "description": "ID atributo."
+          }
+        }
+      },
+      "TeacCreatedResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Estado.",
+            "example": 1
+          },
+          "statusDescription": {
+            "type": "string",
+            "description": "Descripción del estado."
+          }
+        }
+      },
+      "Salesperson": {
+        "type": "object",
+        "properties": {
+          "salesPersonCode": {
+            "type": "string",
+            "description": "Código de Vendedor.",
+            "example": 12312313
+          },
+          "status": {
+            "type": "string",
+            "description": "Estado.",
+            "example": "A"
+          },
+          "type": {
+            "type": "string",
+            "description": "Código de tipo de Empleado.",
+            "example": "VE"
+          },
+          "typeDescription": {
+            "type": "string",
+            "description": "Descripción de tipo de Empleado.",
+            "example": "VENDEDOR"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre.",
+            "example": "MARIA DEL ROSARIO"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Apellido.",
+            "example": "GUTIERREZ"
+          },
+          "motherLastName": {
+            "type": "string",
+            "description": "Apellido Materno.",
+            "example": "ARCE"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Genero.",
+            "example": "F"
+          },
+          "documentNumber": {
+            "type": "string",
+            "description": "Número de Documento.",
+            "example": 1985168
+          },
+          "documentTypeCode": {
+            "type": "string",
+            "description": "Código de Tipo de Documento.",
+            "example": 1
+          },
+          "documentTypeDescription": {
+            "type": "string",
+            "description": "Descripción de Tipo de Documento.",
+            "example": "DNI"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Id de usuario.",
+            "example": "MGUTIERREZA"
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Estado.",
+            "example": "1900-01-01T00:00:00.000Z"
+          },
+          "contactInformation": {
+            "type": "object",
+            "description": "Información de Contacto",
+            "properties": {
+              "emailAddress1": {
+                "type": "string",
+                "description": "Correo Electronico 1.",
+                "example": "MGUTIERREZA@HOTMAIL.COM"
+              },
+              "emailAddress2": {
+                "type": "string",
+                "description": "Correo Electronico 1.",
+                "example": "MGUTIERREZA@GMAIL.COM"
+              },
+              "phoneNumber1": {
+                "type": "string",
+                "description": "Número de teléfono 1.",
+                "example": "825*6287"
+              },
+              "phoneNumber2": {
+                "type": "string",
+                "description": "Número de teléfono 2.",
+                "example": "825*4444"
+              },
+              "phoneNumber3": {
+                "type": "string",
+                "description": "Número de teléfono 3.",
+                "example": "825*3333"
+              }
+            }
+          },
+          "address": {
+            "type": "object",
+            "description": "Detalles de la Dirección.",
+            "properties": {
+              "entityType": {
+                "type": "string",
+                "description": "Tipo de Entidad.",
+                "example": "address"
+              },
+              "id": {
+                "type": "string",
+                "description": "Código de Dirección.",
+                "example": 5
+              },
+              "href": {
+                "type": "string",
+                "description": "Ruta de Acceso a detalles de Dirección.",
+                "example": "address-management/00000005"
+              }
+            }
+          },
+          "territories": {
+            "$ref": "#/components/schemas/Territories"
+          },
+          "managerCode": {
+            "type": "string",
+            "description": "Código de administrador.",
+            "example": 384
+          },
+          "distributorCode": {
+            "type": "string",
+            "description": "Código de Distribuidor.",
+            "example": 801
+          },
+          "branchCode": {
+            "type": "string",
+            "description": "Código de Sede.",
+            "example": 4
+          }
+        }
+      },
+      "SalesTarget": {
+        "type": "object",
+        "description": "Avances de sueldo de vendedor DEX.",
+        "properties": {
+          "projectedSalaryAmount": {
+            "type": "number",
+            "example": 1850,
+            "description": "Importe de sueldo esperado total."
+          },
+          "projectedCommissionsAmount": {
+            "type": "number",
+            "example": 1087,
+            "description": "Importe de comisión proyectada total."
+          },
+          "projectedSalaryPercentage": {
+            "type": "number",
+            "example": 58.8,
+            "description": "Porcentaje de sueldo esperado total"
+          },
+          "distributorCode": {
+            "type": "string",
+            "example": 801,
+            "description": "Código de la sociedad."
+          },
+          "branchCode": {
+            "type": "string",
+            "example": 4,
+            "description": "Código de Sede."
+          },
+          "salespersonCode": {
+            "type": "string",
+            "example": 24,
+            "description": "Código del personal."
+          },
+          "territoryCode": {
+            "type": "string",
+            "example": 481301,
+            "description": "Código de territorio."
+          },
+          "salesforce": {
+            "type": "string",
+            "example": "IMPU",
+            "description": "Código del tipo de fuerza de ventas."
+          },
+          "managerCode": {
+            "type": "string",
+            "example": 0,
+            "description": "Código del jefe."
+          },
+          "calculationDate": {
+            "type": "string",
+            "example": "2019-06-20T00:00:00.000Z",
+            "description": "Fecha de proceso."
+          },
+          "elapsedWorkingDays": {
+            "type": "string",
+            "example": 1,
+            "description": "Días transcurridos del mes."
+          },
+          "totalWorkingDays": {
+            "type": "string",
+            "example": 17,
+            "description": "Total de días a trabajar en el mes."
+          },
+          "workingDaysPercentage": {
+            "type": "string",
+            "example": "68.00%",
+            "description": "Porcentaje de avance."
+          },
+          "month": {
+            "type": "string",
+            "example": 6,
+            "description": "Número del mes de atención."
+          },
+          "year": {
+            "type": "string",
+            "example": 2019,
+            "description": "Año de atención."
+          },
+          "indicators": {
+            "$ref": "#/components/schemas/Indicators"
+          }
+        }
+      },
+      "Indicator": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "string",
+            "example": 1,
+            "description": "Código de Nivel."
+          },
+          "indicatorCode": {
+            "type": "string",
+            "example": 3,
+            "description": "Código de indicador."
+          },
+          "indicatorDescription": {
+            "type": "string",
+            "example": "EXITOS DE COBERTURA",
+            "description": "Descripción de indicador."
+          },
+          "parentIndicatorCode": {
+            "type": "string",
+            "example": 3,
+            "description": "Código del indicador padre."
+          },
+          "indicatorGroupType": {
+            "type": "string",
+            "example": "F",
+            "description": "Código de tipo agrupador de indicador"
+          },
+          "targetSalesAmount": {
+            "type": "number",
+            "example": 44848.51,
+            "description": "Importe de venta objetivo del indicador."
+          },
+          "actualSalesAmount": {
+            "type": "number",
+            "example": 27995.25,
+            "description": "Importe de venta real del indicador."
+          },
+          "salesProgressPercentage": {
+            "type": "number",
+            "example": 62.42,
+            "description": "Porcentaje de avance real del indicador."
+          },
+          "indicatorProjectedSalesAmount": {
+            "type": "number",
+            "example": 41169.49,
+            "description": "Importe de venta proyectado del indicador."
+          },
+          "indicatorProjectedPercentage": {
+            "type": "number",
+            "example": 91.8,
+            "description": "Porcentaje de avance proyectado del indicador."
+          },
+          "projectedAchievement": {
+            "type": "number",
+            "example": 0.92,
+            "description": "Logro proyectado del indicador."
+          },
+          "indicatorWeight": {
+            "type": "number",
+            "example": 40,
+            "description": "Peso de indicador."
+          },
+          "expectedIndicatorSalary": {
+            "type": "number",
+            "example": 740,
+            "description": "Importe de sueldo esperado del indicador."
+          },
+          "expectedIndicatorCommissions": {
+            "type": "number",
+            "example": 680.8,
+            "description": "Importe de comisión proyectada del indicador."
+          },
+          "salaryPercentage": {
+            "type": "number",
+            "example": 92,
+            "description": "Porcentaje de sueldo."
+          },
+          "indicators": {
+            "type": "array",
+            "example": [],
+            "description": "Indicadores anidados, contiene la misma estructura que el elemento superior.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Indicators": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Indicator"
+        }
+      },
+      "Territory": {
+        "type": "object",
+        "properties": {
+          "territoryCode": {
+            "type": "string",
+            "description": "Código de territorio.",
+            "example": 1
+          },
+          "salesforceCode": {
+            "type": "string",
+            "description": "Código de fuerza de venta.",
+            "example": 4
+          }
+        }
+      },
+      "Territories": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Territory"
+        }
+      },
+      "NoOrderRequest": {
+        "type": "object",
+        "required": [
+          "reasonCode",
+          "customerCode",
+          "territoryCode"
+        ],
+        "properties": {
+          "distributorCode": {
+            "type": "string",
+            "example": 120048,
+            "description": "Código de sociedad."
+          },
+          "branchCode": {
+            "type": "string",
+            "example": 4,
+            "description": "Código de sede."
+          },
+          "reasonCode": {
+            "type": "string",
+            "example": 1,
+            "description": "Código de motivo de no-pedido."
+          },
+          "contactDate": {
+            "type": "string",
+            "example": "2022-08-22T00:00:00.000Z",
+            "format": "date",
+            "description": "Fecha de la visita al cliente ."
+          },
+          "customerCode": {
+            "type": "string",
+            "example": 9881,
+            "description": "Código del cliente."
+          },
+          "territoryCode": {
+            "type": "string",
+            "example": 3204953,
+            "description": "Código del territorio."
+          },
+          "observations": {
+            "type": "string",
+            "example": "Local cerrado.",
+            "description": "Observaciones."
+          },
+          "positionX": {
+            "type": "string",
+            "example": -14.061162,
+            "description": "Latitud."
+          },
+          "positionY": {
+            "type": "string",
+            "example": -75.7410496,
+            "description": "Longitud."
+          }
+        }
+      },
+      "ResponseMessage": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Se ejecuto satisfactoriamente",
+            "description": "Mensaje de la respuesta"
+          }
+        }
+      },
+      "BadRequest": {
+        "type": "object",
+        "description": "Object of response error",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "custom code of response",
+            "example": "BAD_REQUEST"
+          },
+          "message": {
+            "type": "string",
+            "description": "message of response",
+            "example": "Request is not well-formed, syntactically incorrect, or violates schema."
+          }
+        }
+      },
+      "UnexpectedError": {
+        "type": "object",
+        "description": "Object of response error",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "custom code of response",
+            "example": "INTERNAL_SERVER_ERROR"
+          },
+          "message": {
+            "type": "string",
+            "description": "message of response",
+            "example": "An internal server error has occurred."
+          }
+        }
+      },
+      "UnprocessableEntity": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "custom code of response",
+            "example": "UNPROCESSABLE_ENTITY"
+          },
+          "message": {
+            "type": "string",
+            "description": "message of response",
+            "example": "The requested action could not be performed, semantically incorrect, or failed business validation."
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DetailUnprocessableEntity"
+            }
+          }
+        }
+      },
+      "DetailUnprocessableEntity": {
+        "type": "object",
+        "description": "Object of response error",
+        "properties": {
+          "field": {
+            "type": "string",
+            "example": "Aplication-Code"
+          },
+          "issue": {
+            "type": "string",
+            "example": "RESOURCE_NOT_FOUNT"
+          },
+          "description": {
+            "type": "string",
+            "example": "backend for Alimarket not found"
+          }
+        }
+      }
+    }
+  }
+}

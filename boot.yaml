@@ -1,0 +1,35 @@
+app:
+  appName: "pass-through"
+  #description: ""
+  keywords: [ "cia", "alicorp", "golang" ]
+  maintainers: [ "cia" ]
+logger:
+  - name: zap-logger
+    description: "Description of entry"
+    zap:
+      encoding: json
+event:
+  - name: event-logger
+    encoding: json
+config:
+  - name: default-config
+gin:
+  - name: pass-through
+    port: 8080
+    enabled: true
+    sw:
+      enabled: true
+      jsonPath: cia-config/docs
+    commonService:
+      enabled: true
+      pathPrefix: "common"
+    loggerEntry: zap-logger
+    eventEntry: event-logger
+    middleware:
+      logging:
+        enabled: true
+        loggerEncoding: "json"
+        eventEncoding: "json"
+      meta:
+        enabled: true
+        prefix: "cia"
