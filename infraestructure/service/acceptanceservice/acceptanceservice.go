@@ -2,7 +2,6 @@ package acceptanceservice
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -13,13 +12,15 @@ import (
 	"dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-domain-alicorp.git/customerrror"
 	tracingModel "dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-extension-rkgin-tracing.git/model"
 	authorization "dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-oauth.git"
+	"github.com/CarosDrean/go-json"
 
 	"pass-trougth/model"
 )
 
 const (
 	_isResetTokenDefault = false
-	_reintentDefault     = 1
+	_retriesDefault      = 1
+	_customTag           = "json-out"
 )
 
 const (
@@ -54,9 +55,9 @@ func New(config model.ServiceConfig) AcceptanceService {
 }
 
 func (a AcceptanceService) Create(ctx tracingModel.Context, input model.AcceptanceServiceInput, headers map[string]string) (model.Message, error) {
-	output := model.AcceptanceServiceOutput(input)
+	output := model.AcceptanceServiceOutput{}
 
-	body, err := a.doRequest(ctx, http.MethodPost, a.config.Url, headers, output, _isResetTokenDefault, _reintentDefault)
+	body, err := a.doRequest(ctx, http.MethodPost, a.config.Url, headers, output, _isResetTokenDefault, _retriesDefault)
 	if err != nil {
 		return model.Message{}, fmt.Errorf("service.acceptance.Create().doRequest(): %w", err)
 	}
@@ -70,9 +71,9 @@ func (a AcceptanceService) Create(ctx tracingModel.Context, input model.Acceptan
 }
 
 func (a AcceptanceService) Update(ctx tracingModel.Context, input model.AcceptanceServiceInput, headers map[string]string) (model.Message, error) {
-	output := model.AcceptanceServiceOutput(input)
+	output := model.AcceptanceServiceOutput{}
 
-	body, err := a.doRequest(ctx, http.MethodPut, a.config.Url, headers, output, _isResetTokenDefault, _reintentDefault)
+	body, err := a.doRequest(ctx, http.MethodPut, a.config.Url, headers, output, _isResetTokenDefault, _retriesDefault)
 	if err != nil {
 		return model.Message{}, fmt.Errorf("service.acceptance.Update().doRequest(): %w", err)
 	}
@@ -88,7 +89,7 @@ func (a AcceptanceService) Update(ctx tracingModel.Context, input model.Acceptan
 func (a AcceptanceService) Delete(ctx tracingModel.Context, input model.RequestDeleteInput, headers map[string]string) (model.Message, error) {
 	output := model.RequestDeleteOutput(input)
 
-	body, err := a.doRequest(ctx, http.MethodDelete, a.config.Url, headers, output, _isResetTokenDefault, _reintentDefault)
+	body, err := a.doRequest(ctx, http.MethodDelete, a.config.Url, headers, output, _isResetTokenDefault, _retriesDefault)
 	if err != nil {
 		return model.Message{}, fmt.Errorf("service.acceptance.Delete().doRequest(): %w", err)
 	}
@@ -101,28 +102,18 @@ func (a AcceptanceService) Delete(ctx tracingModel.Context, input model.RequestD
 	return response, nil
 }
 
-func (a AcceptanceService) Retrieve(ctx tracingModel.Context, inputRequest model.RetrieveInputRequest, headers map[string]string) (model.RetrieveOutputResponse, error) {
-	outputRequest := model.RetrieveOutputRequest{}
-	for _, serviceInput := range inputRequest.Documents {
-		outputRequest.Documents = append(outputRequest.Documents, model.FieldRetrieveOutputRequest(serviceInput))
-	}
-
-	body, err := a.doRequest(ctx, http.MethodPost, a.config.UrlRetrieve, headers, outputRequest, _isResetTokenDefault, _reintentDefault)
+func (a AcceptanceService) Retrieve(ctx tracingModel.Context, inputRequest model.RetrieveRequest, headers map[string]string) (model.RetrieveResponse, error) {
+	body, err := a.doRequest(ctx, http.MethodPost, a.config.UrlRetrieve, headers, inputRequest, _isResetTokenDefault, _retriesDefault)
 	if err != nil {
-		return model.RetrieveOutputResponse{}, fmt.Errorf("service.acceptance.Retrieve().doRequest(): %w", err)
+		return model.RetrieveResponse{}, fmt.Errorf("service.acceptance.Retrieve().doRequest(): %w", err)
 	}
 
-	var inputResponse model.RetrieveInputResponse
-	if err := json.Unmarshal(body, &inputResponse); err != nil {
-		return model.RetrieveOutputResponse{}, fmt.Errorf("service.acceptance.Retrieve().json.Unmarshal(): %w", err)
+	var response model.RetrieveResponse
+	if err := json.UnmarshalWithCustomTag(body, &response, _customTag); err != nil {
+		return model.RetrieveResponse{}, fmt.Errorf("service.acceptance.Retrieve().json.Unmarshal(): %w", err)
 	}
 
-	outputResponse := model.RetrieveOutputResponse{}
-	for _, serviceInput := range inputResponse.Data {
-		outputResponse.Data = append(outputResponse.Data, model.FieldRetrieveOutputResponse(serviceInput))
-	}
-
-	return outputResponse, nil
+	return response, nil
 }
 
 func (a AcceptanceService) doRequest(ctx tracingModel.Context, method, url string, headers map[string]string, payloadData any, isResetToken bool, numberRetries int) ([]byte, error) {
@@ -137,7 +128,7 @@ func (a AcceptanceService) doRequest(ctx tracingModel.Context, method, url strin
 		return nil, fmt.Errorf("auth.GetToken(): %w", err)
 	}
 
-	payload, err := json.Marshal(payloadData)
+	payload, err := json.MarshalWithCustomTag(payloadData, _customTag)
 	if err != nil {
 		return nil, fmt.Errorf("json.Marshal(): %w", err)
 	}

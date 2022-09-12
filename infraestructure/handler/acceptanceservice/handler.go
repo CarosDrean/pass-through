@@ -149,7 +149,7 @@ func (h handler) retrieve(c *gin.Context) {
 		return
 	}
 
-	var input model.RetrieveInputRequest
+	var input model.RetrieveRequest
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(h.response.BindFailed(c, ctx, err))
 		return

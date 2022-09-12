@@ -1,67 +1,35 @@
 package model
 
-type RetrieveOutputRequest struct {
-	Documents FieldRetrieveOutputsRequest `json:"documento"`
+type RetrieveRequest struct {
+	Documents FieldsRetrieveRequest `json:"documents" json-out:"documento"`
 }
 
-type FieldRetrieveOutputRequest struct {
-	OrganizationId string `json:"idOrganizacion"`
-	SupplierTIN    string `json:"RucProveedor"`
-	BuyerTIN       string `json:"RucComprador"`
-	KeyERP         string `json:"LlaveERP"`
-	UserERP        string `json:"UserERP"`
+type FieldRetrieveRequest struct {
+	OrganizationId string `json:"organizationId" json-out:"idOrganizacion"`
+	SupplierTIN    string `json:"supplierTIN" json-out:"RucProveedor"`
+	BuyerTIN       string `json:"buyerTIN" json-out:"RucComprador"`
+	KeyERP         string `json:"keyERP" json-out:"LlaveERP"`
+	UserERP        string `json:"userERP" json-out:"UserERP"`
 }
 
-type FieldRetrieveOutputsRequest []FieldRetrieveOutputRequest
-
-type RetrieveInputRequest struct {
-	Documents FieldRetrieveInputsRequest `json:"documents"`
-}
-
-type FieldRetrieveInputRequest struct {
-	OrganizationId string `json:"organizationId"`
-	SupplierTIN    string `json:"supplierTIN"`
-	BuyerTIN       string `json:"buyerTIN"`
-	KeyERP         string `json:"keyERP"`
-	UserERP        string `json:"userERP"`
-}
-
-type FieldRetrieveInputsRequest []FieldRetrieveInputRequest
+type FieldsRetrieveRequest []FieldRetrieveRequest
 
 // --------- RESPONSE ------------ //
 
-type RetrieveOutputResponse struct {
-	Data FieldRetrieveOutputsResponse `json:"data"`
+type RetrieveResponse struct {
+	Data FieldsRetrieveResponse `json:"data" json-out:"data"`
 }
 
-type FieldRetrieveOutputResponse struct {
-	OrganizationId  string `json:"organizationId"`
-	SupplierTIN     string `json:"supplierTIN"`
-	BuyerTIN        string `json:"buyerTIN"`
-	DocumentId      string `json:"documentId"`
-	CodeError       string `json:"codeError"`
-	DataError       string `json:"dataError"`
-	DocumentState   string `json:"documentState"`
-	DocumentVersion string `json:"documentVersion"`
-	DateTimeState   string `json:"dateTimeState"`
+type FieldRetrieveResponse struct {
+	OrganizationId  string `json:"organizationId" json-out:"idOrganizacion"`
+	SupplierTIN     string `json:"supplierTIN" json-out:"RucProveedor"`
+	BuyerTIN        string `json:"buyerTIN" json-out:"RucComprador"`
+	DocumentId      string `json:"documentId" json-out:"DocumentoID"`
+	CodeError       string `json:"codeError" json-out:"CodigoError"`
+	DataError       string `json:"dataError" json-out:"DataError"`
+	DocumentState   string `json:"documentState" json-out:"EstadoDocumento"`
+	DocumentVersion string `json:"documentVersion" json-out:"VersionDocumento"`
+	DateTimeState   string `json:"dateTimeState" json-out:"FechaHoraEstado"`
 }
 
-type FieldRetrieveOutputsResponse []FieldRetrieveOutputResponse
-
-type RetrieveInputResponse struct {
-	Data FieldRetrieveInputsResponse `json:"data"`
-}
-
-type FieldRetrieveInputResponse struct {
-	OrganizationId  string `json:"idOrganizacion"`
-	SupplierTIN     string `json:"RucProveedor"`
-	BuyerTIN        string `json:"RucComprador"`
-	DocumentId      string `json:"DocumentoID"`
-	CodeError       string `json:"CodigoError"`
-	DataError       string `json:"DataError"`
-	DocumentState   string `json:"EstadoDocumento"`
-	DocumentVersion string `json:"VersionDocumento"`
-	DateTimeState   string `json:"FechaHoraEstado"`
-}
-
-type FieldRetrieveInputsResponse []FieldRetrieveInputResponse
+type FieldsRetrieveResponse []FieldRetrieveResponse

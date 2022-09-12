@@ -43,10 +43,10 @@ func (a AcceptanceService) Delete(ctx tracingModel.Context, input model.RequestD
 	return message, nil
 }
 
-func (a AcceptanceService) Retrieve(ctx tracingModel.Context, input model.RetrieveInputRequest, headers map[string]string) (model.RetrieveOutputResponse, error) {
+func (a AcceptanceService) Retrieve(ctx tracingModel.Context, input model.RetrieveRequest, headers map[string]string) (model.RetrieveResponse, error) {
 	ms, err := a.service.Retrieve(ctx, input, headers)
 	if err != nil {
-		return model.RetrieveOutputResponse{}, fmt.Errorf("acceptanceservice.service.Retrieve(): %w", err)
+		return model.RetrieveResponse{}, fmt.Errorf("acceptanceservice.service.Retrieve(): %w", err)
 	}
 
 	return ms, nil
