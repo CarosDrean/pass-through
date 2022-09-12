@@ -17,6 +17,10 @@ import (
 	"pass-trougth/model"
 )
 
+const _descriptionDefault = "Aceptado"
+
+const _queryParamForDelete = "?accion=cambioestado"
+
 const (
 	_isResetTokenDefault = false
 	_retriesDefault      = 1
@@ -54,52 +58,28 @@ func New(config model.ServiceConfig) AcceptanceService {
 		})}
 }
 
-func (a AcceptanceService) Create(ctx tracingModel.Context, input model.AcceptanceServiceInput, headers map[string]string) (model.Message, error) {
-	output := model.AcceptanceServiceOutput{}
-
-	body, err := a.doRequest(ctx, http.MethodPost, a.config.Url, headers, output, _isResetTokenDefault, _retriesDefault)
+func (a AcceptanceService) CreateOrUpdate(ctx tracingModel.Context, input model.AcceptanceService, headers map[string]string) (model.Message, error) {
+	body, err := a.doRequest(ctx, http.MethodPost, a.config.Url, headers, input, _isResetTokenDefault, _retriesDefault)
 	if err != nil {
-		return model.Message{}, fmt.Errorf("service.acceptance.Create().doRequest(): %w", err)
+		return model.Message{}, fmt.Errorf("service.acceptance.CreateOrUpdate().doRequest(): %w", err)
 	}
 
-	var response model.Message
-	if err := json.Unmarshal(body, &response); err != nil {
-		return model.Message{}, fmt.Errorf("service.acceptance.Create().json.Unmarshal(): %w", err)
-	}
-
-	return response, nil
+	return model.Message{
+		Description: string(body),
+		Message:     _descriptionDefault,
+	}, nil
 }
 
-func (a AcceptanceService) Update(ctx tracingModel.Context, input model.AcceptanceServiceInput, headers map[string]string) (model.Message, error) {
-	output := model.AcceptanceServiceOutput{}
-
-	body, err := a.doRequest(ctx, http.MethodPut, a.config.Url, headers, output, _isResetTokenDefault, _retriesDefault)
-	if err != nil {
-		return model.Message{}, fmt.Errorf("service.acceptance.Update().doRequest(): %w", err)
-	}
-
-	var response model.Message
-	if err := json.Unmarshal(body, &response); err != nil {
-		return model.Message{}, fmt.Errorf("service.acceptance.Update().json.Unmarshal(): %w", err)
-	}
-
-	return response, nil
-}
-
-func (a AcceptanceService) Delete(ctx tracingModel.Context, input model.RequestDeleteInput, headers map[string]string) (model.Message, error) {
-	output := model.RequestDeleteOutput(input)
-
-	body, err := a.doRequest(ctx, http.MethodDelete, a.config.Url, headers, output, _isResetTokenDefault, _retriesDefault)
+func (a AcceptanceService) Delete(ctx tracingModel.Context, input model.RequestDelete, headers map[string]string) (model.Message, error) {
+	body, err := a.doRequest(ctx, http.MethodPut, a.config.Url+_queryParamForDelete, headers, input, _isResetTokenDefault, _retriesDefault)
 	if err != nil {
 		return model.Message{}, fmt.Errorf("service.acceptance.Delete().doRequest(): %w", err)
 	}
 
-	var response model.Message
-	if err := json.Unmarshal(body, &response); err != nil {
-		return model.Message{}, fmt.Errorf("service.acceptance.Delete().json.Unmarshal(): %w", err)
-	}
-
-	return response, nil
+	return model.Message{
+		Description: string(body),
+		Message:     _descriptionDefault,
+	}, nil
 }
 
 func (a AcceptanceService) Retrieve(ctx tracingModel.Context, inputRequest model.RetrieveRequest, headers map[string]string) (model.RetrieveResponse, error) {

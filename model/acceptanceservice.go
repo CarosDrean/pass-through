@@ -2,196 +2,97 @@ package model
 
 import "time"
 
-//------------ INPUT ------------//
-
-type AcceptanceServiceInput struct {
-	DocumentHAS DocumentHasInput `json:"documentHAS"`
+type AcceptanceService struct {
+	DocumentHAS DocumentHas `json:"documentHAS" json-out:"DOCUMENTOHAS"`
 }
 
-type DocumentHasInput struct {
-	AddressSupplier         string                       `json:"addressSupplier"`
-	ReasonSocialSupplier    string                       `json:"reasonSocialSupplier"`
-	ServiceAcceptanceSheets ServiceAcceptanceSheetsInput `json:"serviceAcceptanceSheets"`
-	SupplierTIN             string                       `json:"supplierTIN"`
+type DocumentHas struct {
+	AddressSupplier         string                  `json:"addressSupplier" json-out:"DireccionProveedor"`
+	ReasonSocialSupplier    string                  `json:"reasonSocialSupplier" json-out:"RazonSocialProveedor"`
+	SupplierTIN             string                  `json:"supplierTIN" json-out:"RucProveedor"`
+	ServiceAcceptanceSheets ServiceAcceptanceSheets `json:"serviceAcceptanceSheets" json-out:"HojaAceptacionServicio"`
 }
 
-type ServiceAcceptanceSheetInput struct {
-	AcceptanceDate    time.Time          `json:"acceptanceDate"`
-	AcceptedBy        string             `json:"acceptedBy"`
-	AccountingDateHAS time.Time          `json:"accountingDateHAS"`
-	ApprovedBy        string             `json:"approvedBy"`
-	AttachedFiles     AttachedFilesInput `json:"attachedFiles"`
-	AttentionAreaCode string             `json:"attentionAreaCode"`
-	BroadcastDate     time.Time          `json:"broadcastDate"`
-	ClientTIN         string             `json:"clientTIN"`
-	CurrencyHAS       string             `json:"currencyHAS"`
-	DocumentMaterial  int64              `json:"documentMaterial"`
-	FiscalYear        int                `json:"fiscalYear"`
-	ItemHAS           ItemsHasInput      `json:"itemHAS"`
-	NumberHAS         int                `json:"numberHAS"`
-	Observation       string             `json:"observation"`
-	ServiceEndDate    time.Time          `json:"serviceEndDate"`
-	ServiceStartDate  time.Time          `json:"serviceStartDate"`
-	ServiceType       string             `json:"serviceType"`
-	Society           int                `json:"society"`
-	SupplierCodeERP   int64              `json:"supplierCodeERP"`
-	UserCreationHAS   string             `json:"userCreationHAS"`
+type ServiceAcceptanceSheet struct {
+	AcceptedBy        string        `json:"acceptedBy" json-out:"AceptadoPor"`
+	ApprovedBy        string        `json:"approvedBy" json-out:"AprobadoPor"`
+	AttentionAreaCode string        `json:"attentionAreaCode" json-out:"CodigoAreaAtencion"`
+	ClientTIN         string        `json:"clientTIN" json-out:"RucCliente"`
+	CurrencyHAS       string        `json:"currencyHAS" json-out:"MonedaHAS"`
+	DocumentMaterial  int64         `json:"documentMaterial" json-out:"DocumentoMaterial"`
+	FiscalYear        int           `json:"fiscalYear" json-out:"AnioFiscal"`
+	NumberHAS         int           `json:"numberHAS" json-out:"NumeroHAS"`
+	Observation       string        `json:"observation" json-out:"Observaciones"`
+	ServiceType       string        `json:"serviceType" json-out:"TipoServicio"`
+	Society           int           `json:"society" json-out:"Sociedad"`
+	SupplierCodeERP   int64         `json:"supplierCodeERP" json-out:"CodigoERPProveedor"`
+	UserCreationHAS   string        `json:"userCreationHAS" json-out:"UsuarioCreacionHAS"`
+	AcceptanceDate    time.Time     `json:"acceptanceDate" json-out:"FechaAceptacion"`
+	AccountingDateHAS time.Time     `json:"accountingDateHAS" json-out:"FechaContabilizacionHAS"`
+	BroadcastDate     time.Time     `json:"broadcastDate" json-out:"FechaEmision"`
+	ServiceEndDate    time.Time     `json:"serviceEndDate" json-out:"FechaFinServicio"`
+	ServiceStartDate  time.Time     `json:"serviceStartDate" json-out:"FechaInicioServicio"`
+	ItemHAS           ItemsHas      `json:"itemHAS" json-out:"ItemHAS"`
+	AttachedFiles     AttachedFiles `json:"attachedFiles" json-out:"ArchivoAdjunto"`
 }
 
-type ServiceAcceptanceSheetsInput []ServiceAcceptanceSheetInput
+type ServiceAcceptanceSheets []ServiceAcceptanceSheet
 
-type AttachedFileInput struct {
-	URL         string `json:"URL"`
-	Description string `json:"description"`
-	Name        string `json:"name"`
+type AttachedFile struct {
+	URL         string `json:"URL" json-out:"URL"`
+	Description string `json:"description" json-out:"Descripcion"`
+	Name        string `json:"name" json-out:"Nombre"`
 }
 
-type AttachedFilesInput []AttachedFileInput
+type AttachedFiles []AttachedFile
 
-type ItemHasInput struct {
-	AttendedAmount               float64                `json:"attendedAmount"`
-	CodeConditionPayment         string                 `json:"codeConditionPayment"`
-	DocumentCurrency             string                 `json:"documentCurrency"`
-	DocumentReference            int64                  `json:"documentReference"`
-	EndDateServiceItem           string                 `json:"endDateServiceItem"`
-	FinalDeliveryIndicator       string                 `json:"finalDeliveryIndicator"`
-	ItemDescription              string                 `json:"itemDescription"`
-	ItemNumber                   string                 `json:"itemNumber"`
-	ItemNumberOC                 string                 `json:"itemNumberOC"`
-	ItemQuantity                 int                    `json:"itemQuantity"`
-	MaterialDocuments            MaterialDocumentsInput `json:"materialDocuments"`
-	NumberOC                     int64                  `json:"numberOC"`
-	ObservationItem              string                 `json:"observationItem"`
-	PaymentCondition             string                 `json:"paymentCondition"`
-	PriceItem                    float64                `json:"priceItem"`
-	ReferenceType                int                    `json:"referenceType"`
-	ServiceCode                  string                 `json:"serviceCode"`
-	ServicesGroup                string                 `json:"servicesGroup"`
-	SubItemHAS                   SubItemsHasInput       `json:"subItemHAS"`
-	SubTotalItemCurrencyDocument float64                `json:"subTotalItemCurrencyDocument"`
-	SubTotalItemLocalCurrency    float64                `json:"subTotalItemLocalCurrency"`
-	UnitMeasureItem              string                 `json:"unitMeasureItem"`
+type ItemHas struct {
+	AttendedAmount               float64           `json:"attendedAmount" json-out:"CantidadAtendida"`
+	CodeConditionPayment         string            `json:"codeConditionPayment" json-out:"CodigoCondicionPago"`
+	DocumentCurrency             string            `json:"documentCurrency" json-out:"MonedaDocumento"`
+	DocumentReference            int64             `json:"documentReference" json-out:"DocumentoReferencia"`
+	EndDateServiceItem           string            `json:"endDateServiceItem" json-out:"FechaFinServicioItem"`
+	FinalDeliveryIndicator       string            `json:"finalDeliveryIndicator" json-out:"IndicadorEntregaFinal"`
+	ItemDescription              string            `json:"itemDescription" json-out:"DescripcionItem"`
+	ItemNumber                   string            `json:"itemNumber" json-out:"NumeroItem"`
+	ItemNumberOC                 string            `json:"itemNumberOC" json-out:"NumeroItemOC"`
+	ItemQuantity                 int               `json:"itemQuantity" json-out:"CantidadItem"`
+	NumberOC                     int64             `json:"numberOC" json-out:"NumeroOC"`
+	ObservationItem              string            `json:"observationItem" json:"ObservacionItem"`
+	PaymentCondition             string            `json:"paymentCondition" json-out:"CondicionPago"`
+	PriceItem                    float64           `json:"priceItem" json-out:"PrecioItem"`
+	ReferenceType                int               `json:"referenceType" json-out:"TipoReferencia"`
+	ServiceCode                  string            `json:"serviceCode" json-out:"CodigoServicio"`
+	ServicesGroup                string            `json:"servicesGroup" json-out:"GrupoServicios"`
+	SubTotalItemCurrencyDocument float64           `json:"subTotalItemCurrencyDocument" json-out:"SubTotalItemMonedaDocumento"`
+	SubTotalItemLocalCurrency    float64           `json:"subTotalItemLocalCurrency" json-out:"SubTotalItemMonedaLocal"`
+	UnitMeasureItem              string            `json:"unitMeasureItem" json-out:"UnidadMedidaItem"`
+	SubItemHAS                   SubItemsHas       `json:"subItemHAS" json-out:"SubItemHAS"`
+	MaterialDocuments            MaterialDocuments `json:"materialDocuments" json-out:"DocumentosMaterial"`
 }
 
-type ItemsHasInput []ItemHasInput
+type ItemsHas []ItemHas
 
-type MaterialDocumentInput struct {
-	Amount                 float64 `json:"amount"`
-	Exercise               int     `json:"exercise"`
-	MovementClass          int     `json:"movementClass"`
-	NumberDocumentMaterial int64   `json:"numberDocumentMaterial"`
-	OperationType          string  `json:"operationType"`
-	Position               string  `json:"position"`
-	SubTotal               float64 `json:"subTotal"`
+type MaterialDocument struct {
+	Amount                 float64 `json:"amount" json-out:"Cantidad"`
+	Exercise               int     `json:"exercise" json-out:"Ejercicio"`
+	MovementClass          int     `json:"movementClass" json-out:"ClaseMovimiento"`
+	NumberDocumentMaterial int64   `json:"numberDocumentMaterial" json-out:"NumeroDocumentoMaterial"`
+	OperationType          string  `json:"operationType" json-out:"TipoOperacion"`
+	Position               string  `json:"position" json-out:"Posicion"`
+	SubTotal               float64 `json:"subTotal" json-out:"Subtotal"`
 }
 
-type MaterialDocumentsInput []MaterialDocumentInput
+type MaterialDocuments []MaterialDocument
 
-type SubItemHasInput struct {
-	SubItemDescription string  `json:"subItemDescription"`
-	SubItemNumber      string  `json:"subItemNumber"`
-	SubItemPrice       int     `json:"subItemPrice"`
-	SubItemQuantity    float64 `json:"subItemQuantity"`
-	SubItemServiceCode string  `json:"subItemServiceCode"`
-	SubItemUnitMeasure string  `json:"subItemUnitMeasure"`
-	SubTotalSubItem    float64 `json:"subTotalSubItem"`
+type SubItemHas struct {
+	SubItemDescription string  `json:"subItemDescription" json-out:"DescripcionSubItem"`
+	SubItemNumber      string  `json:"subItemNumber" json-out:"NumeroSubItem"`
+	SubItemPrice       int     `json:"subItemPrice" json-out:"PrecioSubItem"`
+	SubItemQuantity    float64 `json:"subItemQuantity" json-out:"CantidadSubItem"`
+	SubItemServiceCode string  `json:"subItemServiceCode" json-out:"CodigoServicioSubItem"`
+	SubItemUnitMeasure string  `json:"subItemUnitMeasure" json-out:"UnidadMedidaSubItem"`
+	SubTotalSubItem    float64 `json:"subTotalSubItem" json-out:"SubTotalSubItem"`
 }
 
-type SubItemsHasInput []SubItemHasInput
-
-//------------ OUTPUT ------------//
-
-type AcceptanceServiceOutput struct {
-	DocumentHAS DocumentHasOutput `json:"documentHAS"`
-}
-
-type DocumentHasOutput struct {
-	AddressSupplier         string                        `json:"addressSupplier"`
-	ReasonSocialSupplier    string                        `json:"reasonSocialSupplier"`
-	ServiceAcceptanceSheets ServiceAcceptanceSheetsOutput `json:"serviceAcceptanceSheets"`
-	SupplierTIN             string                        `json:"supplierTIN"`
-}
-
-type ServiceAcceptanceSheetOutput struct {
-	AcceptanceDate    time.Time           `json:"acceptanceDate"`
-	AcceptedBy        string              `json:"acceptedBy"`
-	AccountingDateHAS time.Time           `json:"accountingDateHAS"`
-	ApprovedBy        string              `json:"approvedBy"`
-	AttachedFiles     AttachedFilesOutput `json:"attachedFiles"`
-	AttentionAreaCode string              `json:"attentionAreaCode"`
-	BroadcastDate     time.Time           `json:"broadcastDate"`
-	ClientTIN         string              `json:"clientTIN"`
-	CurrencyHAS       string              `json:"currencyHAS"`
-	DocumentMaterial  int64               `json:"documentMaterial"`
-	FiscalYear        int                 `json:"fiscalYear"`
-	ItemHAS           ItemsHasOutput      `json:"itemHAS"`
-	NumberHAS         int                 `json:"numberHAS"`
-	Observation       string              `json:"observation"`
-	ServiceEndDate    time.Time           `json:"serviceEndDate"`
-	ServiceStartDate  time.Time           `json:"serviceStartDate"`
-	ServiceType       string              `json:"serviceType"`
-	Society           int                 `json:"society"`
-	SupplierCodeERP   int64               `json:"supplierCodeERP"`
-	UserCreationHAS   string              `json:"userCreationHAS"`
-}
-
-type ServiceAcceptanceSheetsOutput []ServiceAcceptanceSheetOutput
-
-type AttachedFileOutput struct {
-	URL         string `json:"URL"`
-	Description string `json:"description"`
-	Name        string `json:"name"`
-}
-
-type AttachedFilesOutput []AttachedFileOutput
-
-type ItemHasOutput struct {
-	AttendedAmount               float64                 `json:"attendedAmount"`
-	CodeConditionPayment         string                  `json:"codeConditionPayment"`
-	DocumentCurrency             string                  `json:"documentCurrency"`
-	DocumentReference            int64                   `json:"documentReference"`
-	EndDateServiceItem           string                  `json:"endDateServiceItem"`
-	FinalDeliveryIndicator       string                  `json:"finalDeliveryIndicator"`
-	ItemDescription              string                  `json:"itemDescription"`
-	ItemNumber                   string                  `json:"itemNumber"`
-	ItemNumberOC                 string                  `json:"itemNumberOC"`
-	ItemQuantity                 int                     `json:"itemQuantity"`
-	MaterialDocuments            MaterialDocumentsOutput `json:"materialDocuments"`
-	NumberOC                     int64                   `json:"numberOC"`
-	ObservationItem              string                  `json:"observationItem"`
-	PaymentCondition             string                  `json:"paymentCondition"`
-	PriceItem                    float64                 `json:"priceItem"`
-	ReferenceType                int                     `json:"referenceType"`
-	ServiceCode                  string                  `json:"serviceCode"`
-	ServicesGroup                string                  `json:"servicesGroup"`
-	SubItemHAS                   SubItemsHasOutput       `json:"subItemHAS"`
-	SubTotalItemCurrencyDocument float64                 `json:"subTotalItemCurrencyDocument"`
-	SubTotalItemLocalCurrency    float64                 `json:"subTotalItemLocalCurrency"`
-	UnitMeasureItem              string                  `json:"unitMeasureItem"`
-}
-
-type ItemsHasOutput []ItemHasOutput
-
-type MaterialDocumentOutput struct {
-	Amount                 float64 `json:"amount"`
-	Exercise               int     `json:"exercise"`
-	MovementClass          int     `json:"movementClass"`
-	NumberDocumentMaterial int64   `json:"numberDocumentMaterial"`
-	OperationType          string  `json:"operationType"`
-	Position               string  `json:"position"`
-	SubTotal               float64 `json:"subTotal"`
-}
-
-type MaterialDocumentsOutput []MaterialDocumentOutput
-
-type SubItemHasOutput struct {
-	SubItemDescription string  `json:"subItemDescription"`
-	SubItemNumber      string  `json:"subItemNumber"`
-	SubItemPrice       int     `json:"subItemPrice"`
-	SubItemQuantity    float64 `json:"subItemQuantity"`
-	SubItemServiceCode string  `json:"subItemServiceCode"`
-	SubItemUnitMeasure string  `json:"subItemUnitMeasure"`
-	SubTotalSubItem    float64 `json:"subTotalSubItem"`
-}
-
-type SubItemsHasOutput []SubItemHasOutput
+type SubItemsHas []SubItemHas

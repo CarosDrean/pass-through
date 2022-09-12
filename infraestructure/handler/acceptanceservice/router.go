@@ -27,8 +27,8 @@ func buildHandler(specification model.RouterSpecification) handler {
 func publicRoutes(api *gin.Engine, h handler, middlewares ...gin.HandlerFunc) {
 	routes := api.Group("v1/pass-through", middlewares...)
 
-	routes.POST("", h.create)
-	routes.PUT("", h.update)
+	routes.POST("", h.createOrUpdate)
+	routes.PUT("", h.createOrUpdate)
 	routes.DELETE("", h.delete)
 	routes.POST("/retrieve", h.retrieve)
 }

@@ -7,15 +7,13 @@ import (
 )
 
 type UseCase interface {
-	Create(ctx tracingModel.Context, input model.AcceptanceServiceInput, headers map[string]string) (model.Message, error)
-	Update(ctx tracingModel.Context, input model.AcceptanceServiceInput, headers map[string]string) (model.Message, error)
-	Delete(ctx tracingModel.Context, input model.RequestDeleteInput, headers map[string]string) (model.Message, error)
+	CreateOrUpdate(ctx tracingModel.Context, input model.AcceptanceService, headers map[string]string) (model.Message, error)
+	Delete(ctx tracingModel.Context, input model.RequestDelete, headers map[string]string) (model.Message, error)
 	Retrieve(ctx tracingModel.Context, input model.RetrieveRequest, headers map[string]string) (model.RetrieveResponse, error)
 }
 
 type Service interface {
-	Create(ctx tracingModel.Context, input model.AcceptanceServiceInput, headers map[string]string) (model.Message, error)
-	Update(ctx tracingModel.Context, input model.AcceptanceServiceInput, headers map[string]string) (model.Message, error)
-	Delete(ctx tracingModel.Context, input model.RequestDeleteInput, headers map[string]string) (model.Message, error)
+	CreateOrUpdate(ctx tracingModel.Context, input model.AcceptanceService, headers map[string]string) (model.Message, error)
+	Delete(ctx tracingModel.Context, input model.RequestDelete, headers map[string]string) (model.Message, error)
 	Retrieve(ctx tracingModel.Context, input model.RetrieveRequest, headers map[string]string) (model.RetrieveResponse, error)
 }

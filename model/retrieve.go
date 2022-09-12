@@ -1,5 +1,7 @@
 package model
 
+// --------- REQUEST ------------ //
+
 type RetrieveRequest struct {
 	Documents FieldsRetrieveRequest `json:"documents" json-out:"documento"`
 }

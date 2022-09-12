@@ -16,25 +16,16 @@ func New(service Service) AcceptanceService {
 	return AcceptanceService{service: service}
 }
 
-func (a AcceptanceService) Create(ctx tracingModel.Context, input model.AcceptanceServiceInput, headers map[string]string) (model.Message, error) {
-	message, err := a.service.Create(ctx, input, headers)
+func (a AcceptanceService) CreateOrUpdate(ctx tracingModel.Context, input model.AcceptanceService, headers map[string]string) (model.Message, error) {
+	message, err := a.service.CreateOrUpdate(ctx, input, headers)
 	if err != nil {
-		return model.Message{}, fmt.Errorf("acceptanceservice.service.Create(): %w", err)
+		return model.Message{}, fmt.Errorf("acceptanceservice.service.CreateOrUpdate(): %w", err)
 	}
 
 	return message, nil
 }
 
-func (a AcceptanceService) Update(ctx tracingModel.Context, input model.AcceptanceServiceInput, headers map[string]string) (model.Message, error) {
-	message, err := a.service.Update(ctx, input, headers)
-	if err != nil {
-		return model.Message{}, fmt.Errorf("acceptanceservice.service.Update(): %w", err)
-	}
-
-	return message, nil
-}
-
-func (a AcceptanceService) Delete(ctx tracingModel.Context, input model.RequestDeleteInput, headers map[string]string) (model.Message, error) {
+func (a AcceptanceService) Delete(ctx tracingModel.Context, input model.RequestDelete, headers map[string]string) (model.Message, error) {
 	message, err := a.service.Delete(ctx, input, headers)
 	if err != nil {
 		return model.Message{}, fmt.Errorf("acceptanceservice.service.Delete(): %w", err)

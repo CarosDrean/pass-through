@@ -20,7 +20,7 @@ func newHandler(useCase acceptanceservice.UseCase, response response.ApiResponse
 	return handler{useCase: useCase, response: response}
 }
 
-func (h handler) create(c *gin.Context) {
+func (h handler) createOrUpdate(c *gin.Context) {
 	c.Header("Content-Type", "application/json; charset=utf-8")
 
 	originData := c.GetHeader("origen_datos")
@@ -41,51 +41,15 @@ func (h handler) create(c *gin.Context) {
 		return
 	}
 
-	var input model.AcceptanceServiceInput
+	var input model.AcceptanceService
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(h.response.BindFailed(c, ctx, err))
 		return
 	}
 
-	_, err := h.useCase.Create(ctx, input, headersRequired)
+	_, err := h.useCase.CreateOrUpdate(ctx, input, headersRequired)
 	if err != nil {
-		c.JSON(h.response.Error(c, ctx, "h.useCase.Create()", err))
-		return
-	}
-
-	c.JSON(h.response.Accepted(c, ctx, dataresponse.GetAcceptedDefault()))
-}
-
-func (h handler) update(c *gin.Context) {
-	c.Header("Content-Type", "application/json; charset=utf-8")
-
-	originData := c.GetHeader("origen_datos")
-	typeBusiness := c.GetHeader("tipo_empresa")
-	organizationID := c.GetHeader("org_id")
-
-	ctx := tracingModel.NewContext()
-	ctx.Data[tracingModel.InfoOperationID] = "update"
-
-	headersRequired := map[string]string{
-		"origen_datos": originData,
-		"tipo_empresa": typeBusiness,
-		"org_id":       organizationID,
-	}
-
-	if err := request.ValidateMissingParam(headersRequired); err != nil {
-		c.JSON(h.response.ParamFailed(c, ctx, err))
-		return
-	}
-
-	var input model.AcceptanceServiceInput
-	if err := c.BindJSON(&input); err != nil {
-		c.JSON(h.response.BindFailed(c, ctx, err))
-		return
-	}
-
-	_, err := h.useCase.Update(ctx, input, headersRequired)
-	if err != nil {
-		c.JSON(h.response.Error(c, ctx, "h.useCase.Update()", err))
+		c.JSON(h.response.Error(c, ctx, "h.useCase.CreateOrUpdate()", err))
 		return
 	}
 
@@ -113,7 +77,7 @@ func (h handler) delete(c *gin.Context) {
 		return
 	}
 
-	var input model.RequestDeleteInput
+	var input model.RequestDelete
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(h.response.BindFailed(c, ctx, err))
 		return
