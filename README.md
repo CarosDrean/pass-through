@@ -1,15 +1,17 @@
 # pass-through
 
-[![Build Status](https://dev.azure.com/ciaalicorp/cia-funciones/_apis/build/status/cia-reqresp-alicorp-salesforce-ci?branchName=main)](https://dev.azure.com/ciaalicorp/cia-funciones/_build/latest/cia-reqresp-alicorp-salesforce-ci?branchName=main)
-
-Repositorio generado automaticamente por Alicia
-
-Plantilla v2.1
+Repositorio base para pass-through
 
 ## Environments requeridos
 
 ```dotenv
-DEBUG_MODE=false
-LOGGER_MAX_CHAR_BODY=100
+SERVICE_URL=
+SERVICE_URL_RETRIEVE=
+SERVICE_URL_AUTH=
+SERVICE_USER=
+SERVICE_PASSWORD=
+SERVICE_USER_BASIC=
+SERVICE_PASSWORD_BASIC=
+SERVICE_SUBSCRIPTION_KEY=
 ```
 
