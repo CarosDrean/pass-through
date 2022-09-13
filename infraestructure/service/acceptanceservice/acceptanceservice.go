@@ -90,7 +90,7 @@ func (a AcceptanceService) Retrieve(ctx tracingModel.Context, inputRequest model
 
 	var response model.RetrieveResponse
 	if err := json.UnmarshalWithCustomTag(body, &response, _customTag); err != nil {
-		return model.RetrieveResponse{}, fmt.Errorf("service.acceptance.Retrieve().json.Unmarshal(): %w", err)
+		return model.RetrieveResponse{}, fmt.Errorf("service.acceptance.Retrieve().json.UnmarshalWithCustomTag(): %w", err)
 	}
 
 	return response, nil
@@ -110,7 +110,7 @@ func (a AcceptanceService) doRequest(ctx tracingModel.Context, method, url strin
 
 	payload, err := json.MarshalWithCustomTag(payloadData, _customTag)
 	if err != nil {
-		return nil, fmt.Errorf("json.Marshal(): %w", err)
+		return nil, fmt.Errorf("json.MarshalWithCustomTag(): %w", err)
 	}
 
 	timeInit := time.Now()
@@ -119,7 +119,7 @@ func (a AcceptanceService) doRequest(ctx tracingModel.Context, method, url strin
 		Name:    "AcceptanceService",
 		Time:    timeInit,
 		Where:   "service.acceptanceservice.doRequest()",
-		Payload: payload,
+		Payload: string(payload),
 		Error:   err,
 	})
 	if err != nil {

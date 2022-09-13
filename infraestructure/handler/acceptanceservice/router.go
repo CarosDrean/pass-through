@@ -21,7 +21,7 @@ func NewRouter(specification model.RouterSpecification) {
 func buildHandler(specification model.RouterSpecification) handler {
 	useCase := acceptanceservice.New(acceptanceserviceService.New(specification.Config))
 
-	return newHandler(useCase, buildResponseApi())
+	return newHandler(useCase, overrideResponsesApi())
 }
 
 func publicRoutes(api *gin.Engine, h handler, middlewares ...gin.HandlerFunc) {
@@ -33,7 +33,7 @@ func publicRoutes(api *gin.Engine, h handler, middlewares ...gin.HandlerFunc) {
 	routes.POST("/retrieve", h.retrieve)
 }
 
-func buildResponseApi() response.ApiResponse {
+func overrideResponsesApi() response.ApiResponse {
 	responseAPI := response.New(dataresponse.New())
 	responseAPI.OverrideParamFailedResponses(response.TypeCode{
 		StatusHttp:   http.StatusBadRequest,

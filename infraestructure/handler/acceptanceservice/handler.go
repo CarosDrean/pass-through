@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"pass-trougth/domain/acceptanceservice"
-	"pass-trougth/infraestructure/handler/dataresponse"
 	"pass-trougth/model"
 )
 
@@ -47,13 +46,13 @@ func (h handler) createOrUpdate(c *gin.Context) {
 		return
 	}
 
-	_, err := h.useCase.CreateOrUpdate(ctx, input, headersRequired)
+	m, err := h.useCase.CreateOrUpdate(ctx, input, headersRequired)
 	if err != nil {
 		c.JSON(h.response.Error(c, ctx, "h.useCase.CreateOrUpdate()", err))
 		return
 	}
 
-	c.JSON(h.response.Accepted(c, ctx, dataresponse.GetAcceptedDefault()))
+	c.JSON(h.response.Accepted(c, ctx, m))
 }
 
 func (h handler) delete(c *gin.Context) {
@@ -83,13 +82,13 @@ func (h handler) delete(c *gin.Context) {
 		return
 	}
 
-	_, err := h.useCase.Delete(ctx, input, headersRequired)
+	m, err := h.useCase.Delete(ctx, input, headersRequired)
 	if err != nil {
 		c.JSON(h.response.Error(c, ctx, "h.useCase.Delete()", err))
 		return
 	}
 
-	c.JSON(h.response.Accepted(c, ctx, dataresponse.GetAcceptedDefault()))
+	c.JSON(h.response.Accepted(c, ctx, m))
 }
 
 func (h handler) retrieve(c *gin.Context) {
