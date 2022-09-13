@@ -29,14 +29,14 @@ func Run(boot []byte) {
 		Api:    api,
 		Logger: logger,
 		Config: model.ServiceConfig{
-			Url:             os.Getenv("SERVICE_URL"),
-			UrlRetrieve:     os.Getenv("SERVICE_URL_RETRIEVE"),
-			UrlAuth:         os.Getenv("SERVICE_URL_AUTH"),
-			User:            os.Getenv("SERVICE_USER"),
-			Password:        os.Getenv("SERVICE_PASSWORD"),
-			UserBasic:       os.Getenv("SERVICE_USER_BASIC"),
-			PasswordBasic:   os.Getenv("SERVICE_PASSWORD_BASIC"),
-			SubscriptionKey: os.Getenv("SERVICE_SUBSCRIPTION_KEY"),
+			Url:             os.Getenv("EBIZ_ENDPOINT_ACCEPTANCEHAS"),
+			UrlRetrieve:     os.Getenv("EBIZ_ENDPOINT_ACCEPTANCEHASRETRIEVE"),
+			UrlAuth:         os.Getenv("EBIZ_ENDPOINT_AUTH"),
+			User:            os.Getenv("EBIZ_OAUTH_USER"),
+			Password:        os.Getenv("EBIZ_OAUTH_PASSWORD"),
+			UserBasic:       os.Getenv("EBIZ_BASICAUTH_USER"),
+			PasswordBasic:   os.Getenv("EBIZ_BASICAUTH_PASSWORD"),
+			SubscriptionKey: os.Getenv("EBIZ_SUBSCRIPTION_KEY"),
 		},
 	})
 

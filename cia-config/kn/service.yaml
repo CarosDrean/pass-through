@@ -16,5 +16,53 @@ spec:
               value: 'false'
             - name: LOGGER_MAX_CHAR_BODY
               value: '500'
+            - name: EBIZ_ENDPOINT_ACCEPTANCEHAS
+              valueFrom:
+                secretKeyRef:
+                  name: cia-secret
+                  key: EBIZ_ENDPOINT_ACCEPTANCEHAS
+                  optional: false
+            - name: EBIZ_ENDPOINT_ACCEPTANCEHASRETRIEVE
+              valueFrom:
+                secretKeyRef:
+                  name: cia-secret
+                  key: EBIZ_ENDPOINT_ACCEPTANCEHASRETRIEVE
+                  optional: false
+            - name: EBIZ_ENDPOINT_AUTH
+              valueFrom:
+                secretKeyRef:
+                  name: cia-secret
+                  key: EBIZ_ENDPOINT_AUTH
+                  optional: false
+            - name: EBIZ_OAUTH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: cia-secret
+                  key: EBIZ_OAUTH_USER
+                  optional: false
+            - name: EBIZ_OAUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cia-secret
+                  key: EBIZ_OAUTH_PASSWORD
+                  optional: false
+            - name: EBIZ_BASICAUTH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: cia-secret
+                  key: EBIZ_BASICAUTH_USER
+                  optional: false
+            - name: EBIZ_BASICAUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cia-secret
+                  key: EBIZ_BASICAUTH_PASSWORD
+                  optional: false
+            - name: EBIZ_SUBSCRIPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cia-secret
+                  key: EBIZ_SUBSCRIPTION_KEY
+                  optional: false
       imagePullSecrets:
         - name: acr-ciaalicorp
