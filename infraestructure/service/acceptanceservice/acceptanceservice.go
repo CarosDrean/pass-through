@@ -55,7 +55,8 @@ func New(config model.ServiceConfig) AcceptanceService {
 			User:     config.UserBasic,
 			Password: config.PasswordBasic,
 			Headers:  map[string]string{_headerSubscriptionKey: config.SubscriptionKey},
-		})}
+		}),
+	}
 }
 
 func (a AcceptanceService) CreateOrUpdate(ctx tracingModel.Context, input model.AcceptanceService, headers map[string]string) (model.Message, error) {

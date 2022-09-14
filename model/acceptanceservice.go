@@ -58,7 +58,7 @@ type ItemHas struct {
 	ItemNumberOC                 string            `json:"itemNumberOC" json-out:"NumeroItemOC"`
 	ItemQuantity                 int               `json:"itemQuantity" json-out:"CantidadItem"`
 	NumberOC                     int64             `json:"numberOC" json-out:"NumeroOC"`
-	ObservationItem              string            `json:"observationItem" json:"ObservacionItem"`
+	ObservationItem              string            `json:"observationItem" json-out:"ObservacionItem"`
 	PaymentCondition             string            `json:"paymentCondition" json-out:"CondicionPago"`
 	PriceItem                    float64           `json:"priceItem" json-out:"PrecioItem"`
 	ReferenceType                int               `json:"referenceType" json-out:"TipoReferencia"`
