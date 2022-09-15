@@ -21,7 +21,7 @@ func NewRouter(specification model.RouterSpecification) {
 func buildHandler(specification model.RouterSpecification) handler {
 	useCase := acceptanceservice.New(acceptanceserviceService.New(specification.Config))
 
-	return newHandler(useCase, buildAndoverrideResponsesApi())
+	return newHandler(useCase, buildAndOverrideResponsesApi())
 }
 
 func publicRoutes(api *gin.Engine, h handler, middlewares ...gin.HandlerFunc) {
@@ -33,7 +33,7 @@ func publicRoutes(api *gin.Engine, h handler, middlewares ...gin.HandlerFunc) {
 	routes.POST("/retrieve", h.retrieve)
 }
 
-func buildAndoverrideResponsesApi() response.ApiResponse {
+func buildAndOverrideResponsesApi() response.ApiResponse {
 	responseAPI := response.New(dataresponse.New())
 	responseAPI.OverrideParamFailedResponses(response.TypeCode{
 		StatusHttp:   http.StatusBadRequest,
@@ -43,7 +43,7 @@ func buildAndoverrideResponsesApi() response.ApiResponse {
 	})
 	responseAPI.OverrideUnexpectedErrorResponses(response.TypeCode{
 		StatusHttp:  http.StatusInternalServerError,
-		Code:        model.InernalServerErrorCode,
+		Code:        model.InternalServerErrorCode,
 		Description: model.InternalServerErrorDescription,
 	})
 	responseAPI.OverrideBindFailedResponses(response.TypeCode{

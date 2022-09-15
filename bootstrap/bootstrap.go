@@ -21,7 +21,7 @@ func Run(boot []byte) {
 
 	api := ginEntry.Router
 	api.Use(tracing.LoggerHandler(logger, getDebugMode(), getMaxCharBodyLogger(), model.ErrorApi{
-		Code:        model.InernalServerErrorCode,
+		Code:        model.InternalServerErrorCode,
 		Description: model.InternalServerErrorDescription,
 	}))
 
@@ -31,10 +31,7 @@ func Run(boot []byte) {
 		Config: model.ServiceConfig{
 			Url:             os.Getenv("EBIZ_ENDPOINT_ACCEPTANCEHAS"),
 			UrlRetrieve:     os.Getenv("EBIZ_ENDPOINT_ACCEPTANCEHASRETRIEVE"),
-			UrlAuth:         os.Getenv("EBIZ_ENDPOINT_AUTH"),
-			User:            os.Getenv("EBIZ_OAUTH_USER"),
-			Password:        os.Getenv("EBIZ_OAUTH_PASSWORD"),
-			UserBasic:       os.Getenv("EBIZ_BASICAUTH_USER"),
+			UrlAuth:         os.Getenv("EBIZ_ENDPOINT_INTERNALAUTH"),
 			PasswordBasic:   os.Getenv("EBIZ_BASICAUTH_PASSWORD"),
 			SubscriptionKey: os.Getenv("EBIZ_SUBSCRIPTION_KEY"),
 		},

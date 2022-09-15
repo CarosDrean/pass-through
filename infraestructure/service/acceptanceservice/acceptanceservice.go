@@ -5,15 +5,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/url"
-	"strings"
 	"time"
 
 	"dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-domain-alicorp.git/customerrror"
 	tracingModel "dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-extension-rkgin-tracing.git/model"
-	authorization "dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-oauth.git"
 	"github.com/CarosDrean/go-json"
 
+	"pass-trougth/infraestructure/service/auth"
 	"pass-trougth/model"
 )
 
@@ -35,28 +33,12 @@ const (
 )
 
 type AcceptanceService struct {
-	dataForToken *strings.Reader
-
 	config model.ServiceConfig
-	auth   authorization.Auth
+	auth   auth.Auth
 }
 
 func New(config model.ServiceConfig) AcceptanceService {
-	data := url.Values{}
-	data.Set("grant_type", "password")
-	data.Set("username", config.User)
-	data.Set("password", config.Password)
-
-	return AcceptanceService{
-		dataForToken: strings.NewReader(data.Encode()),
-		config:       config,
-		auth: authorization.New(authorization.Config{
-			Url:      config.UrlAuth,
-			User:     config.UserBasic,
-			Password: config.PasswordBasic,
-			Headers:  map[string]string{_headerSubscriptionKey: config.SubscriptionKey},
-		}),
-	}
+	return AcceptanceService{config: config, auth: auth.New(config.UrlAuth)}
 }
 
 func (a AcceptanceService) CreateOrUpdate(ctx tracingModel.Context, input model.AcceptanceService, headers map[string]string) (model.Message, error) {
@@ -98,13 +80,7 @@ func (a AcceptanceService) Retrieve(ctx tracingModel.Context, inputRequest model
 }
 
 func (a AcceptanceService) doRequest(ctx tracingModel.Context, method, url string, headers map[string]string, payloadData any, isResetToken bool, numberRetries int) ([]byte, error) {
-	dataTokenBuffer := &bytes.Buffer{}
-	_, err := dataTokenBuffer.ReadFrom(a.dataForToken)
-	if err != nil {
-		return nil, fmt.Errorf("dataTokenBuffer.ReadFrom(): %w", err)
-	}
-
-	token, err := a.auth.GetToken(dataTokenBuffer.Bytes(), isResetToken)
+	token, err := a.auth.GetToken(ctx, model.Auth{IsResetToken: isResetToken})
 	if err != nil {
 		return nil, fmt.Errorf("auth.GetToken(): %w", err)
 	}
@@ -129,7 +105,7 @@ func (a AcceptanceService) doRequest(ctx tracingModel.Context, method, url strin
 
 	req.Header.Add(_headerContentType, _headerContentTypeValue)
 	req.Header.Add(_headerSubscriptionKey, a.config.SubscriptionKey)
-	req.Header.Add(_headerAuthorization, "BEARER "+token)
+	req.Header.Add(_headerAuthorization, "BEARER "+token.AccessToken)
 
 	for key, value := range headers {
 		req.Header.Add(key, value)

@@ -4,9 +4,8 @@ go 1.18
 
 require (
 	dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-domain-alicorp.git v0.1.3
-	dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-extension-rkgin-common.git v0.9.0
+	dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-extension-rkgin-common.git v0.9.1
 	dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-extension-rkgin-tracing.git v0.1.0
-	dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-oauth.git v0.5.4
 	github.com/CarosDrean/go-json v0.9.95
 	github.com/gin-gonic/gin v1.8.1
 	github.com/joho/godotenv v1.4.0

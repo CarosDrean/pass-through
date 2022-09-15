@@ -1,8 +1,8 @@
 package model
 
 const (
-	InernalServerErrorCode = "SKN0005"
-	BadRequestCode         = "SKN0007"
+	InternalServerErrorCode = "SKN0005"
+	BadRequestCode          = "SKN0007"
 )
 
 const (

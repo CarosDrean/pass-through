@@ -37,8 +37,8 @@ cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9
 cloud.google.com/go/storage v1.14.0/go.mod h1:GrKmX003DSIwi9o29oFT7YDnHYwZoctc3fOKtUw0Xmo=
 dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-domain-alicorp.git v0.1.3 h1:Kwk5Xm4NLE2r97wzCfSRuvgfbQCXMyDv4egXl+7G4zM=
 dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-domain-alicorp.git v0.1.3/go.mod h1:EYbReN38+KAjEHL7bzeUpF9qzWeZDSfP6+fyMnF2FzQ=
-dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-extension-rkgin-common.git v0.9.0 h1:X5F5E45M4qdnLGx1/fDlfWfRI8VJzKWoQ5canvxE+vA=
-dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-extension-rkgin-common.git v0.9.0/go.mod h1:NKCFJ5fsN08WT/bcBfZSbnWE1+95xeze3JxRYv3eli4=
+dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-extension-rkgin-common.git v0.9.1 h1:+EwYlTl/UHxDfquzsmhPZ+GCdZoR+IVX/j+22fz1moM=
+dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-extension-rkgin-common.git v0.9.1/go.mod h1:NKCFJ5fsN08WT/bcBfZSbnWE1+95xeze3JxRYv3eli4=
 dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-extension-rkgin-tracing.git v0.1.0 h1:3WsE4Ft8SKfVsrsSLD2PhQiD6hG+fyXTTrLXYpguDEE=
 dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-extension-rkgin-tracing.git v0.1.0/go.mod h1:gPIXbPFTYliyevtjmgL7ufzruE3o1ZkMx9jbN3v0RNQ=
 dev.azure.com/ciaalicorp/CIA-Funciones/cia-library-oauth.git v0.5.4 h1:Ze1WXX9oUZbgsHnFtinesmgwLiutiubVEHBe2qxw2DA=

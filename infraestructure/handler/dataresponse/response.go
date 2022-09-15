@@ -16,7 +16,7 @@ func New() DataResponse {
 
 func (d DataResponse) GetErrorResponse(err *customerror.Error) (int, any) {
 	if !err.HasCode() {
-		err.SetCode(model.InernalServerErrorCode)
+		err.SetCode(model.InternalServerErrorCode)
 	}
 
 	if !err.HasAPIMessage() {

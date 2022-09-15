@@ -28,35 +28,11 @@ spec:
                   name: cia-secret
                   key: EBIZ_ENDPOINT_ACCEPTANCEHASRETRIEVE
                   optional: false
-            - name: EBIZ_ENDPOINT_AUTH
+            - name: EBIZ_ENDPOINT_INTERNALAUTH
               valueFrom:
                 secretKeyRef:
                   name: cia-secret
                   key: EBIZ_ENDPOINT_AUTH
-                  optional: false
-            - name: EBIZ_OAUTH_USER
-              valueFrom:
-                secretKeyRef:
-                  name: cia-secret
-                  key: EBIZ_OAUTH_USER
-                  optional: false
-            - name: EBIZ_OAUTH_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: cia-secret
-                  key: EBIZ_OAUTH_PASSWORD
-                  optional: false
-            - name: EBIZ_BASICAUTH_USER
-              valueFrom:
-                secretKeyRef:
-                  name: cia-secret
-                  key: EBIZ_BASICAUTH_USER
-                  optional: false
-            - name: EBIZ_BASICAUTH_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: cia-secret
-                  key: EBIZ_BASICAUTH_PASSWORD
                   optional: false
             - name: EBIZ_SUBSCRIPTION_KEY
               valueFrom:
